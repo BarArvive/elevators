@@ -1,8 +1,5 @@
 # arbox-task
 
-## Notes
-*
-
 ## Project setup
 ```
 npm install
