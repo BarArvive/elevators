@@ -77,18 +77,7 @@ export default {
     //takes the elevator to the next floor
     nextFloor(elevator) {
       if (this.elevetorsFloor[elevator] === this.taskElevator[elevator]) { //elevator has arrived
-        this.changeFloorState(this.elevetorsFloor[elevator], "Arrived")
-        this.elevatorColor[elevator] = "green"
-        this.playSound()
-        setTimeout(() => { // 2s wait
-          this.changeFloorState(this.elevetorsFloor[elevator], "Call")
-          this.elevatorColor[elevator] = "black"
-          let waitFloor = this.WaitingList.shift(); //serve as a queue, FIFO
-          this.freeElevators.push(elevator);
-          this.taskElevator[elevator] = -1;
-          if (waitFloor !== undefined)
-            this.CallElevatorAux(waitFloor);
-        }, 2000)
+        this.elevatorArrival(elevator);
       }
       else {
         let copy = [...this.elevetorsFloor]
@@ -103,6 +92,21 @@ export default {
       }
     },
 
+    elevatorArrival(elevator) {
+      this.changeFloorState(this.elevetorsFloor[elevator], "Arrived")
+      this.elevatorColor[elevator] = "green"
+      this.playSound()
+      setTimeout(() => { // 2s wait
+        this.changeFloorState(this.elevetorsFloor[elevator], "Call")
+        this.elevatorColor[elevator] = "black"
+        let waitFloor = this.WaitingList.shift(); //serve as a queue, FIFO
+        this.freeElevators.push(elevator);
+        this.taskElevator[elevator] = -1;
+        if (waitFloor !== undefined)
+          this.CallElevatorAux(waitFloor);
+      }, 2000)
+    },
+
     changeFloorState(floor, state) {
       let copy = [...this.floorState];
       copy[floor] = state;
@@ -111,7 +115,7 @@ export default {
 
     findClosestFreeElevator(floor) {
       const posibleElevators = this.freeElevators.sort((a, b) =>
-      Math.abs(this.elevetorsFloor[a] - floor) - Math.abs(this.elevetorsFloor[b] - floor));
+        Math.abs(this.elevetorsFloor[a] - floor) - Math.abs(this.elevetorsFloor[b] - floor));
       const closestElevator = this.freeElevators.findIndex(x => x === posibleElevators[0]);
       return this.freeElevators.splice(closestElevator, 1)[0];
     },
