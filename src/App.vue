@@ -1,28 +1,31 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h3 class='pt-5'>Elevator Exercise</h3>
+    <b-button class='m-4' variant="success" v-if="!isStarted" @click="isStarted=true">Start</b-button>
+    <Elevators v-if="isStarted"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Elevators from './components/Elevators.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Elevators
+  },
+  data() {
+    return {
+      isStarted: false,
+    }
   }
 }
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  background-color: #DADADA;
+  height: 100vh;
 }
 </style>
